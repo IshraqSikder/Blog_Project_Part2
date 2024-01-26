@@ -1,0 +1,58 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+
+<div class="d-flex flex-wrap px-5 pt-3 align-items-center">
+  <div class="col-md-6">
+    <h1>Welcome to Django Blog</h1>
+    <p>
+      Django, a high-level Python web framework, offers a robust and efficient platform for developing dynamic blogs. Its built-in ORM simplifies database management, allowing bloggers to focus on content creation rather than database intricacies. The MVT (Model-View-Template) architecture separates concerns, enhancing code organization. Django's templating engine facilitates the creation of consistent and customizable blog layouts. The admin interface streamlines content management, offering an intuitive platform for authors and administrators. Django's security features, including protection against common web vulnerabilities, ensure a secure environment for handling user-generated content. With a thriving community and extensive documentation, Django is an ideal choice for building powerful and scalable blog applications.
+    </p>
+  </div>
+  <div class="col-md-6 ps-5">
+    <img src="{% static 'blog_image.webp' %}" />
+  </div>
+</div>
+
+<div class="d-flex flex-wrap" style="background: #d3b8ad">
+  <div class="col-md-2 p-4">
+    <h6>All Categories</h6>
+    {% for cat in category %}
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="flexRadioDefault"
+        id="flexRadioDefault1" />
+      <label class="form-check-label" for="flexRadioDefault1">
+        <a
+          href="{% url 'category_wise_post' cat.slug %}"
+          class="text-decoration-none"
+          >{{cat.name}}</a
+        >
+      </label>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="col-md-10 my-3">
+    <h4 class="ms-3">{{data|length}} results found</h4>
+    <div class="container d-flex flex-wrap">
+      {% for i in data %}
+      <div class="col-sm-3">
+        <div class="card mx-2 my-2">
+          <div class="card-body">
+            <h5 class="card-title">{{i.title}}</h5>
+            <p class="card-text">{{i.content |truncatewords:15 }}</p>
+            <p>Author : {{i.author.first_name}} {{i.author.last_name}}</p>
+            <p>
+              Category : {% for j in i.category.all %}
+              <button class="btn btn-primary btn-sm my-1">{{j.name}}</button>
+              {% endfor %}
+            </p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
